@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ServiceID=xxxx
-Environment=xxxx
+Environment=tttt
 
 #getting instance ids
 
