@@ -1,3 +1,6 @@
+ServiceID=9999
+Environment=Virtual
+
 #getting instance ids
 
 for i in $(aws ec2 describe-instances  --filter  Name=tag-value,Values=$ServiceID Name=tag-value,Values=$Environment --query 'Reservations[*].Instances[*].InstanceId' --output text); do
