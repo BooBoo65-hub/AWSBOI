@@ -1,5 +1,5 @@
-ServiceID=9999
-Environment=Virtual
+ServiceID=xxxx
+Environment=xxxx
 
 #getting instance ids
 
