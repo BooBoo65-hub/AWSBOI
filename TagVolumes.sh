@@ -19,7 +19,17 @@ iEnvironment=$(aws ec2 describe-instances --instance-id $i --query 'Reservations
 # if there are no tag values assign instance tag values to  the volumes
 
 
-          if [ "$iName" != "None" ] && [ "$vName" == "None" ]; then
+  if [ "$iName" != "None" ] && [ "$vName" == "None" ]; then
               aws ec2 create-tags --resources $j --tags Key=Name,Value="'`echo $iName`'"
+
+          fi
+
+          if [ "$iServiceid" != "None" ] && [ "$vServiceid" == "None" ]; then
+              aws ec2 create-tags --resources $j --tags Key="Service ID",Value=`echo $iServiceid`
+          fi
+
+          if [ "$iEnvironment" != "None" ] && [ "$vEnvironment" == "None" ]; then
+              aws ec2 create-tags --resources $j --tags Key=Environment,Value=`echo $iEnvironment`
+          fi
    done
 done
