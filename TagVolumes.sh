@@ -7,6 +7,7 @@ for i in $(aws ec2 describe-instances  --filter  Name=tag-value,Values=$ServiceI
 iName=$(aws ec2 describe-instances --instance-id $i --query 'Reservations[].Instances[].[Tags[?Key==`Name`].Value | [0]]' --output text)
 iServiceid=$(aws ec2 describe-instances --instance-id $i --query 'Reservations[].Instances[].[Tags[?Key==`Service ID`].Value | [0]]' --output text)
 iEnvironment=$(aws ec2 describe-instances --instance-id $i --query 'Reservations[].Instances[].[Tags[?Key==`Environment`].Value | [0]]' --output text)
+iInstance=$(aws ec2 describe-instances --instance-id $i --query 'Reservations[].Instances[].[Tags[?Key==`BooBoo`].Value | [0]]' --output text)
 
 #getting volume ids attached to the instances
    for j in $(aws ec2 describe-volumes --filters Name=attachment.instance-id,Values=$i --query 'Volumes[*].{ID:VolumeId}' --output text); do
@@ -14,6 +15,7 @@ iEnvironment=$(aws ec2 describe-instances --instance-id $i --query 'Reservations
    vName=$(aws ec2 describe-volumes --volume-id $j --query 'Volumes[].[Tags[?Key==`Name`].Value | [0]]' --output text)
    vServiceid=$(aws ec2 describe-volumes --volume-id $j --query 'Volumes[].[Tags[?Key==`Service ID`].Value | [0]]' --output text)
    vEnvironment=$(aws ec2 describe-volumes --volume-id $j --query 'Volumes[].[Tags[?Key==`Environment`].Value | [0]]' --output text)
+   vInstance=$(aws ec2 describe-volumes --volume-id $j --query 'Volumes[].[Tags[?Key==`BooBoo`].Value | [0]]' --output text)
 
 # if there are no tag values assign instance tag values to  the volumes
 
@@ -28,6 +30,10 @@ iEnvironment=$(aws ec2 describe-instances --instance-id $i --query 'Reservations
           fi
 
           if [ "$iEnvironment" != "None" ] && [ "$vEnvironment" == "None" ]; then
+              aws ec2 create-tags --resources $j --tags Key=Environment,Value=`echo $iEnvironment`
+          fi
+
+          if [ "$iInstance" != "None" ] && [ "$viInstance" == "None" ]; then
               aws ec2 create-tags --resources $j --tags Key=Environment,Value=`echo $iEnvironment`
           fi
    done
