@@ -16,19 +16,19 @@ iEnvironment=$(aws ec2 describe-instances --instance-id $i --query 'Reservations
    vServiceid=$(aws ec2 describe-volumes --volume-id $j --query 'Volumes[].[Tags[?Key==`Service ID`].Value | [0]]' --output text)
    vEnvironment=$(aws ec2 describe-volumes --volume-id $j --query 'Volumes[].[Tags[?Key==`Environment`].Value | [0]]' --output text)
 
-# if there are no tag values assign instance tag values to  the volumes
+# if there are no tag values assign instance delete  values to  the volumes
 
 
-          if [ "$iName" != "None" ] && [ "$vName" == "None" ]; then
+          if [ "$iName" != "Name" ] && [ "$vName" == "Name" ]; then
               aws ec2 delete-tags --resources $j --tags Key=Name,Value="'`echo $iName`'"
 
           fi
 
-          if [ "$iServiceid" != "None" ] && [ "$vServiceid" == "None" ]; then
+          if [ "$iServiceid" != "Service ID" ] && [ "$vServiceid" == "Service ID" ]; then
               aws ec2 delete-tags --resources $j --tags Key="Service ID",Value=`echo $iServiceid`
           fi
 
-          if [ "$iEnvironment" != "None" ] && [ "$vEnvironment" == "None" ]; then
+          if [ "$iEnvironment" != "Environment" ] && [ "$vEnvironment" == "Environment" ]; then
               aws ec2 delete-tags --resources $j --tags Key=Environment,Value=`echo $iEnvironment`
           fi
    done
