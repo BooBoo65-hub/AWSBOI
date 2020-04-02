@@ -34,7 +34,7 @@ iInstance=$(aws ec2 describe-instances --instance-id $i --query 'Reservations[].
           fi
 
           if [ "$iInstance" != "None" ] && [ "$viInstance" == "None" ]; then
-              aws ec2 create-tags --resources $j --tags Key=Environment,Value=`echo $iEnvironment`
+              aws ec2 create-tags --resources $j --tags Key=BooBoo,Value=`echo $iInstance`
           fi
    done
 done
