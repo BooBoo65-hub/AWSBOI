@@ -1,8 +1,11 @@
 ServiceID=9999
+ServiceID=9991
+Environment=Virtual
 
 #getting instance ids
 
-for i in $(aws ec2 describe-instances  --filter  Name=tag-value,Values=$ServiceID --query 'Reservations[*].Instances[*].InstanceId' --output text); do
+# for i in $(aws ec2 describe-instances  --filter  Name=tag-value,Values=$ServiceID --query 'Reservations[*].Instances[*].InstanceId' --output text); do
+for i in $(aws ec2 describe-instances  --filter  Name=tag-value,Values=$ServiceID Name=tag-value,Values=$Environment --query 'Reservations[*].Instances[*].InstanceId' --output text); do
 # getting tag values based on key values
 iName=$(aws ec2 describe-instances --instance-id $i --query 'Reservations[].Instances[].[Tags[?Key==`Name`].Value | [0]]' --output text)
 iServiceid=$(aws ec2 describe-instances --instance-id $i --query 'Reservations[].Instances[].[Tags[?Key==`Service ID`].Value | [0]]' --output text)
