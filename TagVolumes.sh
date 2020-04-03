@@ -8,7 +8,6 @@ iName=$(aws ec2 describe-instances --instance-id $i --query 'Reservations[].Inst
 iServiceid=$(aws ec2 describe-instances --instance-id $i --query 'Reservations[].Instances[].[Tags[?Key==`Service ID`].Value | [0]]' --output text)
 iEnvironment=$(aws ec2 describe-instances --instance-id $i --query 'Reservations[].Instances[].[Tags[?Key==`Environment`].Value | [0]]' --output text)
 iInstance=$(aws ec2 describe-instances --instance-id $i --query 'Reservations[].Instances[].[Tags[?Key==`BooBoo`].Value | [0]]' --output text)
-iEc2StopStartSchedule=$(aws ec2 describe-instances --instance-id $i --query 'Reservations[].Instances[].[Tags[?Key==`Ec2StopStartSchedule`].Value | [0]]' --output text)
 
 #getting volume ids attached to the instances
    for j in $(aws ec2 describe-volumes --filters Name=attachment.instance-id,Values=$i --query 'Volumes[*].{ID:VolumeId}' --output text); do
@@ -17,7 +16,6 @@ iEc2StopStartSchedule=$(aws ec2 describe-instances --instance-id $i --query 'Res
    vServiceid=$(aws ec2 describe-volumes --volume-id $j --query 'Volumes[].[Tags[?Key==`Service ID`].Value | [0]]' --output text)
    vEnvironment=$(aws ec2 describe-volumes --volume-id $j --query 'Volumes[].[Tags[?Key==`Environment`].Value | [0]]' --output text)
    vInstance=$(aws ec2 describe-volumes --volume-id $j --query 'Volumes[].[Tags[?Key==`BooBoo`].Value | [0]]' --output text)
-   vEc2StopStartSchedule=$(aws ec2 describe-volumes --volume-id $j --query 'Volumes[].[Tags[?Key==`Ec2StopStartSchedule`].Value | [0]]' --output text)
 
 # if there are no tag values assign instance tag values to  the volumes
 
@@ -37,10 +35,6 @@ iEc2StopStartSchedule=$(aws ec2 describe-instances --instance-id $i --query 'Res
 
           if [ "$iInstance" != "None" ] && [ "$vInstance" == "None" ]; then
               aws ec2 create-tags --resources $j --tags Key=BooBoo,Value=`echo $iInstance`
-          fi
-
-          if [ "$iEc2StopStartSchedule" != "None" ] && [ "$vEc2StopStartSchedule" == "None" ]; then
-              aws ec2 create-tags --resources $j --tags Key=vEc2StopStartSchedule,Value=`echo $iInstance`
           fi
    done
 done
