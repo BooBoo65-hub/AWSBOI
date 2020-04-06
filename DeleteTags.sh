@@ -25,19 +25,19 @@ iEC2=$(aws ec2 describe-instances --instance-id $i --query 'Reservations[].Insta
 # if there are no tag values assign instance tag values to  the volumes
 
 
-          if [ "$iName" == "Name" ] && [ "$vName" == "Name" ]; then
+          if [ "$iName" == "None" ] && [ "$vName" == "Name" ]; then
               aws ec2 delete-tags --resources $j --tags Key=Name,Value="'`echo $iName`'"
           fi
 
-          if [ "$iServiceid" == "None" ] && [ "$vServiceid" == "None" ]; then
+          if [ "$iServiceid" == "None" ] && [ "$vServiceid" == "Service ID" ]; then
               aws ec2 delete-tags --resources $j --tags Key="Service ID",Value=`echo $iServiceid`
           fi
 
-          if [ "$iEnvironment" == "None" ] && [ "$vEnvironment" == "None" ]; then
+          if [ "$iEnvironment" == "None" ] && [ "$vEnvironment" == "Environment" ]; then
               aws ec2 delete-tags --resources $j --tags Key=Environment,Value=`echo $iEnvironment`
           fi
 
-          if [ "$iInstance" == "None" ] && [ "$vInstance" == "None" ]; then
+          if [ "$iInstance" == "None" ] && [ "$vInstance" == "BooBoo" ]; then
               aws ec2 delete-tags --resources $j --tags Key=BooBoo,Value=`echo $iInstance`
           fi
 
